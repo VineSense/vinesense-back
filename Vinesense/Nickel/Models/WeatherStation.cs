@@ -7,7 +7,7 @@ namespace Nickel.Models
     using System.Data.Entity.Spatial;
 
     [Table("viticulture.weather_station")]
-    public partial class WeatherStation
+    public partial class WeatherStation : IRecord
     {
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Id { get; set; }

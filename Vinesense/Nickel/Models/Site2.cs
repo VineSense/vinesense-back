@@ -7,7 +7,7 @@ namespace Nickel.Models
     using System.Data.Entity.Spatial;
 
     [Table("viticulture.site_2")]
-    public partial class Site2 : ISensorRecord
+    public partial class Site2 : ISiteRecord
     {
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Id { get; set; }
