@@ -190,6 +190,10 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="ModelNextGen\Log.cs" />
+    <Compile Include="ModelNextGen\Sensor.cs" />
+    <Compile Include="ModelNextGen\SensorType.cs" />
+    <Compile Include="ModelNextGen\Site.cs" />
     <Compile Include="Models\AldoStation.cs" />
     <Compile Include="Models\DefaultSiteFilter.cs" />
     <Compile Include="Models\DefaultSitesProvider.cs" />
@@ -197,6 +201,7 @@
     <Compile Include="Models\IRecordFilter.cs" />
     <Compile Include="Models\ISitesProvider.cs" />
     <Compile Include="Models\ISiteRecord.cs" />
+    <Compile Include="Models\NextGenModel.cs" />
     <Compile Include="Models\Site.cs" />
     <Compile Include="Models\Site1.cs" />
     <Compile Include="Models\Site2.cs" />
