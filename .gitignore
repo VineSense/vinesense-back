@@ -181,3 +181,8 @@ UpgradeLog*.htm
 
 # Microsoft Fakes
 FakesAssemblies/
+<<<<<<< HEAD
+=======
+
+Connections.config
+>>>>>>> 2a8f657... 정말로 제외
