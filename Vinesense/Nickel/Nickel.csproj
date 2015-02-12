@@ -54,6 +54,9 @@
       <HintPath>..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Practices.ServiceLocation">
+      <HintPath>..\packages\CommonServiceLocator.1.2\lib\portable-windows8+net40+sl5+windowsphone8\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Practices.Unity, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.dll</HintPath>
@@ -61,6 +64,9 @@
     <Reference Include="Microsoft.Practices.Unity.Configuration, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Mvc">
+      <HintPath>..\packages\Unity.Mvc.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -142,6 +148,9 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.2\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
+    <Reference Include="WebActivatorEx">
+      <HintPath>..\packages\WebActivatorEx.2.0\lib\net40\WebActivatorEx.dll</HintPath>
+    </Reference>
     <Reference Include="WebGrease, Version=1.6.5135.21930, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
@@ -154,6 +163,8 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\UnityConfig.cs" />
+    <Compile Include="App_Start\UnityMvcActivator.cs" />
     <Compile Include="App_Start\UnityResolver.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\HelpPage\ApiDescriptionExtensions.cs" />
@@ -185,32 +196,30 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\SitesController.cs" />
-    <Compile Include="Controllers\WeatherController.cs" />
+    <Compile Include="Controllers\LogsController.cs" />
+    <Compile Include="Controllers\WeathersController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="ModelNextGen\Log.cs" />
-    <Compile Include="ModelNextGen\Sensor.cs" />
-    <Compile Include="ModelNextGen\SensorType.cs" />
-    <Compile Include="ModelNextGen\Site.cs" />
-    <Compile Include="Models\AldoStation.cs" />
-    <Compile Include="Models\DefaultSiteFilter.cs" />
-    <Compile Include="Models\DefaultSitesProvider.cs" />
-    <Compile Include="Models\IRecord.cs" />
-    <Compile Include="Models\IRecordFilter.cs" />
-    <Compile Include="Models\ISitesProvider.cs" />
-    <Compile Include="Models\ISiteRecord.cs" />
-    <Compile Include="Models\NextGenModel.cs" />
-    <Compile Include="Models\Site.cs" />
-    <Compile Include="Models\Site1.cs" />
-    <Compile Include="Models\Site2.cs" />
-    <Compile Include="Models\Site3.cs" />
-    <Compile Include="Models\Site4.cs" />
-    <Compile Include="Models\Site5.cs" />
-    <Compile Include="Models\Site6.cs" />
-    <Compile Include="Models\VinesenseModel.cs" />
-    <Compile Include="Models\WeatherStation.cs" />
+    <Compile Include="Models\GenericRepository.cs" />
+    <Compile Include="Models\IDbContextFactory.cs" />
+    <Compile Include="Models\IDepthOfInterestProvider.cs" />
+    <Compile Include="Models\IGenericRepository.cs" />
+    <Compile Include="Models\ILogsRepository.cs" />
+    <Compile Include="Models\IGraphDataService.cs" />
+    <Compile Include="Models\ISensorsRepository.cs" />
+    <Compile Include="Models\ISitesRepository.cs" />
+    <Compile Include="Models\IUnitOfWork.cs" />
+    <Compile Include="Models\IWeathersRepository.cs" />
+    <Compile Include="Models\LogsRepositoy.cs" />
+    <Compile Include="Models\LinearInterExtrapolationGraphDataService.cs" />
+    <Compile Include="Models\OneTwoThreeFourAndFiveDepthOfInterestProvider.cs" />
+    <Compile Include="Models\SensorsRepository.cs" />
+    <Compile Include="Models\SitesRepository.cs" />
+    <Compile Include="Models\UnitOfWork.cs" />
+    <Compile Include="Models\VinesenseContext.cs" />
+    <Compile Include="Models\VinesenseDbContextFactory.cs" />
+    <Compile Include="Models\WeathersRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -283,6 +292,12 @@
   <ItemGroup>
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Vinesense\Vinesense.csproj">
+      <Project>{df939869-bed1-4d59-8568-c945e019c37b}</Project>
+      <Name>Vinesense</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

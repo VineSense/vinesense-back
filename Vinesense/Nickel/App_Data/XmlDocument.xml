@@ -4,6 +4,31 @@
         <name>Nickel</name>
     </assembly>
     <members>
+        <member name="T:Nickel.App_Start.UnityConfig">
+            <summary>
+            Specifies the Unity configuration for the main container.
+            </summary>
+        </member>
+        <member name="M:Nickel.App_Start.UnityConfig.GetConfiguredContainer">
+            <summary>
+            Gets the configured Unity container.
+            </summary>
+        </member>
+        <member name="M:Nickel.App_Start.UnityConfig.RegisterTypes(Microsoft.Practices.Unity.IUnityContainer)">
+            <summary>Registers the type mappings with the Unity container.</summary>
+            <param name="container">The unity container to configure.</param>
+            <remarks>There is no need to register concrete types such as controllers or API controllers (unless you want to 
+            change the defaults), as Unity allows resolving a concrete type even if it was not previously registered.</remarks>
+        </member>
+        <member name="T:Nickel.App_Start.UnityWebActivator">
+            <summary>Provides the bootstrapping for integrating Unity with ASP.NET MVC.</summary>
+        </member>
+        <member name="M:Nickel.App_Start.UnityWebActivator.Start">
+            <summary>Integrates Unity when the application starts.</summary>
+        </member>
+        <member name="M:Nickel.App_Start.UnityWebActivator.Shutdown">
+            <summary>Disposes the Unity container when the application is shut down.</summary>
+        </member>
         <member name="M:Nickel.Areas.HelpPage.ApiDescriptionExtensions.GetFriendlyId(System.Web.Http.Description.ApiDescription)">
             <summary>
             Generates an URI-friendly ID for the <see cref="T:System.Web.Http.Description.ApiDescription"/>. E.g. "Get-Values-id_name" instead of "GetValues/{id}?name={name}"
@@ -481,76 +506,18 @@
             </summary>
             <param name="documentPath">The physical path to XML document.</param>
         </member>
-        <member name="M:Nickel.Controllers.SitesController.Get(System.Int32,System.DateTime,System.DateTime)">
-            <summary>
-            siteId번 장소에 있는 센서의 날짜 및 시각 [begin, end) 구간에 해당하는 측정 정보를 가져옵니다.
-            </summary>
-            <param name="siteId">장소 번호입니다.</param>
-            <param name="begin">시작 날짜 및 시각(포함)입니다.</param>
-            <param name="end">종료 날짜 및 시각(제외)입니다.</param>
-            <returns>주어진 조건을 만족하면서 정보가 등록된 순서에 따라서 정렬된 배열입니다.</returns>
+        <member name="M:Nickel.Controllers.WeathersController.GetRange(System.Nullable{System.DateTime},System.Nullable{System.DateTime})">
+            <param name="begin">시작 날짜 및 시각(포함)</param>
+            <param name="end">종료 날짜 및 시간(제외)</param>
         </member>
-        <member name="T:Nickel.Controllers.SitesController.SitesResult">
+        <member name="P:Nickel.Controllers.WeathersController.WeathersControllerResponse.All">
             <summary>
-            장소 정보와 장소와 관련된 측정 데이터를 함께 나타냅니다.
+            전체 데이터
             </summary>
         </member>
-        <member name="M:Nickel.Controllers.WeatherController.Get(System.DateTime,System.DateTime)">
+        <member name="P:Nickel.Controllers.WeathersController.WeathersControllerResponse.Daily">
             <summary>
-            날짜 및 시각 [begin, end) 구간에 해당하는 기상 정보를 가져옵니다.
-            </summary>
-            <param name="begin">시작 날짜 및 시각(포함)입니다.</param>
-            <param name="end">종료 날짜 및 시각(제외)입니다.</param>
-            <returns>주어진 조건을 만족하면서 정보가 등록된 순서에 따라서 정렬된 배열입니다.</returns>
-        </member>
-        <member name="T:Nickel.Models.ISiteRecord">
-            <summary>
-            추가적으로, 테이블의 원본 열과 데이터를 포함합니다.
-            </summary>
-        </member>
-        <member name="T:Nickel.Models.IRecord">
-            <summary>
-            특정 시각, 특정 장소에서의 측정 데이터를 나타냅니다.
-            </summary>
-        </member>
-        <member name="P:Nickel.Models.IRecord.Id">
-            <summary>
-            측정 번호입니다.
-            </summary>
-        </member>
-        <member name="P:Nickel.Models.IRecord.Date">
-            <summary>
-            날짜를 나타냅니다. 시간은 의미를 가지지 않습니다.
-            </summary>
-        </member>
-        <member name="P:Nickel.Models.IRecord.Time">
-            <summary>
-            하루 중 시각을 나타냅니다.
-            </summary>
-        </member>
-        <member name="P:Nickel.Models.ISiteRecord.Temperatues">
-            <summary>
-            이 장소에서, 여러 깊이에서 측정한 온도입니다.
-            </summary>
-        </member>
-        <member name="P:Nickel.Models.ISiteRecord.Moistures">
-            <summary>
-            이 장소에서, 여러 깊이에서 측정한 습도입니다.
-            </summary>
-        </member>
-        <member name="T:Nickel.Models.Site">
-            <summary>
-            장소 정보를 나타냅니다.
-            </summary>
-        </member>
-        <member name="P:Nickel.Models.Site.Name">
-            <summary>
-            사람이 알아볼 수 있도록 하는 장소 이름입니다.
-            </summary>
-        </member>
-        <member name="P:Nickel.Models.Site.Depths">
-            <summary>
-            온습도 데이터와 같은 순서로 나열한 센서의 깊이입니다.
+            일별 데이터
             </summary>
         </member>
     </members>

@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Nickel.Models
 {
-    public interface ISitesProvider
+    interface IDbContextFactory
     {
-        Dictionary<int, Site> Sites { get; }
+        DbContext CreateContext();
     }
 }

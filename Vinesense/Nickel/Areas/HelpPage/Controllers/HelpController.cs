@@ -18,7 +18,7 @@ namespace Nickel.Areas.HelpPage.Controllers
         {
         }
 
-        public HelpController(HttpConfiguration config)
+        private HelpController(HttpConfiguration config)
         {
             Configuration = config;
         }

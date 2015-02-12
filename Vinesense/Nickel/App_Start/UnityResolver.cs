@@ -50,9 +50,18 @@ namespace Nickel
             return new UnityResolver(child);
         }
 
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                container.Dispose();
+            }
+        }
+
         public void Dispose()
         {
-            container.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

@@ -1,11 +1,13 @@
 ﻿using Microsoft.Practices.Unity;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using Nickel.App_Start;
 using Nickel.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
+using System.Web.Mvc;
 
 namespace Nickel
 {
@@ -21,18 +23,15 @@ namespace Nickel
             settings.Formatting = Formatting.Indented;
             settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
 
-            var container = new UnityContainer();
-            container.RegisterType<IRecordFilter, DefaultRecordFilter>();
-            container.RegisterType<ISitesProvider, DefaultSitesProvider>(new ContainerControlledLifetimeManager());
-            config.DependencyResolver = new UnityResolver(container);
+            config.DependencyResolver = new UnityResolver(UnityConfig.GetConfiguredContainer());
 
             // Web API 경로
             config.MapHttpAttributeRoutes();
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
-                routeTemplate: "api/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional }
+                routeTemplate: "api/{controller}/{action}",
+                defaults: new { }
             );
         }
     }
