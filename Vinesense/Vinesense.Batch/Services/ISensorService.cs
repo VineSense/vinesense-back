@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +10,6 @@ namespace Vinesense.Batch.Services
 {
     interface ISensorService
     {
-        Sensor ResolveSensor(int siteId, float depth, SensorType sensorType);
+        Sensor ResolveSensor(DbContext context, int siteId, float depth, SensorType sensorType);
     }
 }

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
+using Vinesense.Batch.DataSources;
 using Vinesense.Batch.Services;
 using Vinesense.Legacy;
 using Vinesense.Model;
@@ -27,19 +29,22 @@ namespace Vinesense.Batch.Migrators
         public abstract double Latitude { get; }
         public abstract double Longitude { get; }
 
-        public abstract void MigrateLogs(T site);
+        public abstract void MigrateLogs(DbContext context, T site);
 
         public void MigrateSite()
         {
-            SiteService.ResolveSite(Number);
+            using (var context = new NewContext())
+            {
+                SiteService.ResolveSite(context, Number);
+            }
             SiteService.UpdateSite(Number, Name, Latitude, Longitude);
         }
 
-        protected void MigrateLog(DateTime timestamp, float value, float depth, SensorType sensorType)
+        protected void MigrateLog(DbContext context, DateTime timestamp, float value, float depth, SensorType sensorType)
         {
-            int siteId = SiteService.ResolveSite(Number);
-            Sensor sensor = SensorService.ResolveSensor(siteId, depth, sensorType);
-            LogService.MigrateLog(sensor.Id, timestamp, value);
+            int siteId = SiteService.ResolveSite(context, Number);
+            Sensor sensor = SensorService.ResolveSensor(context, siteId, depth, sensorType);
+            LogService.MigrateLog(context, sensor.Id, timestamp, value);
         }
     }
 }

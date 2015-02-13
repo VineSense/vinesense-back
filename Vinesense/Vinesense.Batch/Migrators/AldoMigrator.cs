@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,19 +37,19 @@ namespace Vinesense.Batch.Migrators
             get { return 0; }
         }
 
-        public override void MigrateLogs(AldoStation site)
+        public override void MigrateLogs(DbContext context, AldoStation site)
         {
             DateTime timestamp = site.ConvertDateTime();
-            MigrateLog(timestamp, (float)site.P1Humidity, 2, SensorType.Humidity);
-            MigrateLog(timestamp, (float)site.P1Temp, 2, SensorType.Temperature);
-            MigrateLog(timestamp, (float)site.P2WaterPotential, 5, SensorType.WaterPotential);
-            MigrateLog(timestamp, (float)site.P2Temp, 5, SensorType.Temperature);
-            MigrateLog(timestamp, (float)site.P3Moisture, 7, SensorType.Moisture);
-            MigrateLog(timestamp, (float)site.P3Temp, 7, SensorType.Temperature);
-            MigrateLog(timestamp, (float)site.P4Moisture, 9, SensorType.Moisture);
-            MigrateLog(timestamp, (float)site.P4Temp, 9, SensorType.Temperature);
-            MigrateLog(timestamp, (float)site.P5Moisture, 0, SensorType.Moisture);
-            MigrateLog(timestamp, (float)site.P5Temp, 0, SensorType.Temperature);
+            MigrateLog(context, timestamp, (float)site.P1Humidity, 2, SensorType.Humidity);
+            MigrateLog(context, timestamp, (float)site.P1Temp, 2, SensorType.Temperature);
+            MigrateLog(context, timestamp, (float)site.P2WaterPotential, 5, SensorType.WaterPotential);
+            MigrateLog(context, timestamp, (float)site.P2Temp, 5, SensorType.Temperature);
+            MigrateLog(context, timestamp, (float)site.P3Moisture, 7, SensorType.Moisture);
+            MigrateLog(context, timestamp, (float)site.P3Temp, 7, SensorType.Temperature);
+            MigrateLog(context, timestamp, (float)site.P4Moisture, 9, SensorType.Moisture);
+            MigrateLog(context, timestamp, (float)site.P4Temp, 9, SensorType.Temperature);
+            MigrateLog(context, timestamp, (float)site.P5Moisture, 0, SensorType.Moisture);
+            MigrateLog(context, timestamp, (float)site.P5Temp, 0, SensorType.Temperature);
         }
     }
 }

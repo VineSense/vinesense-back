@@ -1,6 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Data.SqlClient;
 using System.Linq;
@@ -13,30 +14,25 @@ namespace Vinesense.Batch.Services
 {
     class LogService : ILogService
     {
-        public void MigrateLog(int sensorId, DateTime timestamp, float value)
+        public void MigrateLog(DbContext context, int sensorId, DateTime timestamp, float value)
         {
-            try
+            var logs = context.Set<Log>();
+            var q = from l in logs
+                    where l.SensorId == sensorId && l.Timestamp == timestamp
+                    select l;
+            if (q.Count() != 0)
             {
-                using (var context = new NewContext())
-                {
-                    Log log = new Log
-                    {
-                        SensorId = sensorId,
-                        Timestamp = timestamp,
-                        Value = value
-                    };
-                    context.Logs.Add(log);
-                    context.SaveChanges();
-                }
+                return;
             }
-            catch (DbUpdateException e)
+
+            Log log = new Log
             {
-                MySqlException innerException = e.InnerException.InnerException as MySqlException;
-                if (innerException == null || innerException.Number != 1062)
-                {
-                    throw;
-                }
-            }
+                SensorId = sensorId,
+                Timestamp = timestamp,
+                Value = value
+            };
+
+            context.Set<Log>().Add(log);
         }
     }
 }

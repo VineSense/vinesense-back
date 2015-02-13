@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +10,6 @@ namespace Vinesense.Batch.Services
 {
     interface ILogService
     {
-        void MigrateLog(int sensorId, DateTime timestamp, float value);
+        void MigrateLog(DbContext context, int sensorId, DateTime timestamp, float value);
     }
 }

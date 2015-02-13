@@ -1,7 +1,9 @@
 ﻿using Microsoft.Practices.Unity;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,56 +26,58 @@ namespace Vinesense.Batch.Services
             RecordRangeFilter = recordRangeFilter;
         }
 
-        public void MigrateAll()
+        IEnumerable<Task> MigrateAllTasks()
         {
-            using (var context = new LegacyContext())
-            {
-                MigrateSite(
-                    (last) =>
-                        from r in context.Site1.Where(RecordRangeFilter.BuildDateTimeRangeFilter(last))
-                        orderby r.Id ascending
-                        select (Site1)r
-                    );
-                MigrateSite(
-                    (last) =>
-                        from r in context.Site2.Where(RecordRangeFilter.BuildDateTimeRangeFilter(last))
-                        orderby r.Id ascending
-                        select (Site2)r
-                    );
-                MigrateSite(
-                    (last) =>
-                        from r in context.Site3.Where(RecordRangeFilter.BuildDateTimeRangeFilter(last))
-                        orderby r.Id ascending
-                        select (Site3)r
-                    );
-                MigrateSite(
-                    (last) =>
-                        from r in context.Site4.Where(RecordRangeFilter.BuildDateTimeRangeFilter(last))
-                        orderby r.Id ascending
-                        select (Site4)r
-                    );
-                MigrateSite(
-                    (last) =>
-                        from r in context.Site5.Where(RecordRangeFilter.BuildDateTimeRangeFilter(last))
-                        orderby r.Id ascending
-                        select (Site5)r
-                    );
-                MigrateSite(
-                    (last) =>
-                        from r in context.Site6.Where(RecordRangeFilter.BuildDateTimeRangeFilter(last))
-                        orderby r.Id ascending
-                        select (Site6)r
-                    );
-                MigrateSite(
-                    (last) =>
-                        from r in context.AldoStation.Where(RecordRangeFilter.BuildDateTimeRangeFilter(last))
-                        orderby r.Id ascending
-                        select (AldoStation)r
-                    );
-            }
+            yield return MigrateSite(
+                (context, last) =>
+                    from r in context.Site1.Where(RecordRangeFilter.BuildDateTimeRangeFilter(last))
+                    orderby r.Id ascending
+                    select (Site1)r
+                );
+            yield return MigrateSite(
+                (context, last) =>
+                    from r in context.Site2.Where(RecordRangeFilter.BuildDateTimeRangeFilter(last))
+                    orderby r.Id ascending
+                    select (Site2)r
+                );
+            yield return MigrateSite(
+                (context, last) =>
+                    from r in context.Site3.Where(RecordRangeFilter.BuildDateTimeRangeFilter(last))
+                    orderby r.Id ascending
+                    select (Site3)r
+                );
+            yield return MigrateSite(
+                (context, last) =>
+                    from r in context.Site4.Where(RecordRangeFilter.BuildDateTimeRangeFilter(last))
+                    orderby r.Id ascending
+                    select (Site4)r
+                );
+            yield return MigrateSite(
+                (context, last) =>
+                    from r in context.Site5.Where(RecordRangeFilter.BuildDateTimeRangeFilter(last))
+                    orderby r.Id ascending
+                    select (Site5)r
+                );
+            yield return MigrateSite(
+                (context, last) =>
+                    from r in context.Site6.Where(RecordRangeFilter.BuildDateTimeRangeFilter(last))
+                    orderby r.Id ascending
+                    select (Site6)r
+                );
+            yield return MigrateSite(
+                (context, last) =>
+                    from r in context.AldoStation.Where(RecordRangeFilter.BuildDateTimeRangeFilter(last))
+                    orderby r.Id ascending
+                    select (AldoStation)r
+                );
         }
 
-        void MigrateSite<T>(Func<DateTime, IEnumerable<T>> query)
+        public void MigrateAll()
+        {
+            Task.WaitAll(MigrateAllTasks().ToArray());
+        }
+
+        Task MigrateSite<T>(Func<LegacyContext, DateTime, IEnumerable<T>> query)
             where T : ISiteRecord
         {
             Console.WriteLine(typeof(T).ToString());
@@ -83,12 +87,28 @@ namespace Vinesense.Batch.Services
             DateTime last = SiteService.GetLastTimestamp(migrator.Number);
             if (last != DateTime.MinValue)
             {
-                last -= new TimeSpan(1, 0, 0, 0);
+                last -= new TimeSpan(0, 2, 0, 0);
             }
-            foreach (var l in query(last))
+
+            IEnumerable<T> legacyData;
+            using (var legacyContext = new LegacyContext())
             {
-                migrator.MigrateLogs(l);
+                legacyData = query(legacyContext, last).ToList();
             }
+
+            return Task.Run(() =>
+            {
+                foreach (var l in legacyData)
+                {
+                    using (var context = new NewContext())
+                    {
+                        context.Configuration.AutoDetectChangesEnabled = false;
+                        migrator.MigrateLogs(context, l);
+                        context.ChangeTracker.DetectChanges();
+                        context.SaveChanges();
+                    }
+                }
+            });
         }
     }
 }
