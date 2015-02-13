@@ -33,14 +33,14 @@ namespace Nickel.Models
             public int DayOfYear { get; set; }
         };
 
-        public static IEnumerable<GraphData> GroupBy(this IQueryable<GraphData> graphData, int interval = 0)
+        public static IEnumerable<GraphData> GroupBy(this IQueryable<GraphData> graphData, int interval = 0, DateTime? firstDay = null)
         {
             if (interval <= 0)
             {
                 return graphData;
             }
 
-            DateTime firstDay = graphData.First().Timestamp;
+            DateTime realFirstDay = firstDay ?? graphData.First().Timestamp;
             var q = from d in graphData
                     let groupNumber = DbFunctions.DiffDays(d.Timestamp, firstDay).Value / interval
                     let groupNumberInteger = DbFunctions.Truncate((double)groupNumber, 0)
@@ -54,7 +54,7 @@ namespace Nickel.Models
             return from v in q.AsEnumerable()
                    select new GraphData
                    {
-                       Timestamp = firstDay + TimeSpan.FromDays(interval * v.GroupNumber),
+                       Timestamp = realFirstDay + TimeSpan.FromDays(interval * v.GroupNumber),
                        Value = v.Value
                    };
         }

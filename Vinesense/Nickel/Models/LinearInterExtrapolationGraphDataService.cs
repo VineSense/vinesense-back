@@ -62,7 +62,7 @@ namespace Nickel.Models
                        SiteId = site.Id,
                        Depth = depth,
                        IsInterExtrapolated = result.Item1,
-                       Data = result.Item2.FilterRange(begin, end).GroupBy(interval)
+                       Data = result.Item2.FilterRange(begin, end).GroupBy(interval, begin)
                    };
         }
 
@@ -75,7 +75,7 @@ namespace Nickel.Models
                        SiteId = siteId,
                        Depth = depth,
                        IsInterExtrapolated = result.Item1,
-                       Data = result.Item2.FilterRange(begin, end).GroupBy(interval)
+                       Data = result.Item2.FilterRange(begin, end).GroupBy(interval, begin)
                    };
         }
 
