@@ -95,7 +95,7 @@ namespace Nickel.Controllers
                 return data;
             }
 
-            DateTime firstDay = data.First().Timestamp;
+            DateTime firstDay = data.Count() > 0 ? data.First().Timestamp : DateTime.MinValue;
             var q = from d in data
                     let groupNumber = DbFunctions.DiffDays(d.Timestamp, firstDay).Value / interval
                     let groupNumberInteger = DbFunctions.Truncate((double)groupNumber, 0)
