@@ -33,7 +33,7 @@ namespace Nickel.Models
                        select s;
             }
 
-            throw new ArgumentException();
+            return GetType("temperature");
         }
     }
 }

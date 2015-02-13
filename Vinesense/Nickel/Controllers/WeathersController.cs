@@ -2,7 +2,9 @@
 using Nickel.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Http;
 using Vinesense.Model;
@@ -17,49 +19,97 @@ namespace Nickel.Controllers
             WeathersRepository = weathersRepository;
         }
 
+        public class WeathersControllerRequest
+        {
+            public IEnumerable<WeatherControllerRequestRange> Ranges { get; set; }
+        }
+
+        public class WeatherControllerRequestRange
+        {
+            public string Tag { get; set; }
+            public DateTime? Begin { get; set; }
+            public DateTime? End { get; set; }
+            public int? Interval { get; set; }
+        }
+
+        private WeathersControllerSingleResult GetSingleResult(WeatherControllerRequestRange range)
+        {
+            DateTime begin = range.Begin ?? DateTime.MinValue;
+            DateTime end = range.End ?? DateTime.MaxValue;
+
+            var data = from w in WeathersRepository.GetRange(begin, end)
+                       orderby w.Timestamp ascending
+                       select new WeatherResult
+                       {
+                           Timestamp = w.Timestamp,
+                           Temperature = w.Temperature
+                       };
+
+            return new WeathersControllerSingleResult
+            {
+                Tag = range.Tag,
+                Data = data.GroupBy(range.Interval ?? 0).ToList()
+            };
+        }
+
         /// <param name="begin">시작 날짜 및 시각(포함)</param>
         /// <param name="end">종료 날짜 및 시간(제외)</param>
-        [HttpGet]
-        [ActionName("GetRange")]
-        public WeathersControllerResponse GetRange(DateTime? begin = null, DateTime? end = null)
+        [HttpPost]
+        [ActionName("GetMultiRange")]
+        public WeathersControllerResponse GetMultiRange([FromBody]WeathersControllerRequest request)
         {
-            begin = begin ?? DateTime.MinValue;
-            end = end ?? DateTime.MaxValue;
+            if (request == null || request.Ranges == null)
+            {
+                throw new HttpResponseException(HttpStatusCode.BadRequest);
+            }
 
-            var all = from w in WeathersRepository.GetRange(begin.Value, end.Value)
-                      orderby w.Timestamp ascending
-                      select new WeatherResult
-                      {
-                          Timestamp = w.Timestamp,
-                          Temperature = w.Temperature
-                      };
+            var q = from range in request.Ranges
+                    select GetSingleResult(range);
 
-            var daily = from w in WeathersRepository.GetRangeDaily(begin.Value, end.Value)
-                        orderby w.Timestamp ascending
-                        select new WeatherResult
-                        {
-                            Timestamp = w.Timestamp,
-                            Temperature = w.Temperature
-                        };
-            
             return new WeathersControllerResponse
             {
-                All = all.ToList(),
-                Daily = daily.ToList()
+                Result = q.ToList()
             };
+        }
+
+        public class WeathersControllerSingleResult
+        {
+            public IEnumerable<WeatherResult> Data { get; set; }
+            public string Tag { get; set; }
         }
 
         public class WeathersControllerResponse
         {
-            /// <summary>
-            /// 전체 데이터
-            /// </summary>
-            public IEnumerable<WeatherResult> All { get; set; }
+            public IEnumerable<WeathersControllerSingleResult> Result { get; set; }
+        }
+    }
 
-            /// <summary>
-            /// 일별 데이터
-            /// </summary>
-            public IEnumerable<WeatherResult> Daily { get; set; }
+    public static class WeatherResultHelper
+    {
+        public static IEnumerable<WeatherResult> GroupBy(this IQueryable<WeatherResult> data, int interval = 0)
+        {
+            if (interval <= 0)
+            {
+                return data;
+            }
+
+            DateTime firstDay = data.First().Timestamp;
+            var q = from d in data
+                    let groupNumber = DbFunctions.DiffDays(d.Timestamp, firstDay).Value / interval
+                    let groupNumberInteger = DbFunctions.Truncate((double)groupNumber, 0)
+                    group d by (int)groupNumberInteger.Value into g
+                    select new
+                    {
+                        GroupNumber = g.Key,
+                        Temperature = g.Average((d) => d.Temperature)
+                    };
+
+            return from v in q.AsEnumerable()
+                   select new WeatherResult
+                   {
+                       Timestamp = firstDay + TimeSpan.FromDays(interval * v.GroupNumber),
+                       Temperature = v.Temperature
+                   };
         }
     }
 }

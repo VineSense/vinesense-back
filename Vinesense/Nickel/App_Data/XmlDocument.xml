@@ -506,19 +506,9 @@
             </summary>
             <param name="documentPath">The physical path to XML document.</param>
         </member>
-        <member name="M:Nickel.Controllers.WeathersController.GetRange(System.Nullable{System.DateTime},System.Nullable{System.DateTime})">
+        <member name="M:Nickel.Controllers.WeathersController.GetMultiRange(Nickel.Controllers.WeathersController.WeathersControllerRequest)">
             <param name="begin">시작 날짜 및 시각(포함)</param>
             <param name="end">종료 날짜 및 시간(제외)</param>
-        </member>
-        <member name="P:Nickel.Controllers.WeathersController.WeathersControllerResponse.All">
-            <summary>
-            전체 데이터
-            </summary>
-        </member>
-        <member name="P:Nickel.Controllers.WeathersController.WeathersControllerResponse.Daily">
-            <summary>
-            일별 데이터
-            </summary>
         </member>
     </members>
 </doc>

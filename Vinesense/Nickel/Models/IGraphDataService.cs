@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -38,7 +39,7 @@ namespace Nickel.Models
             {
                 return graphData;
             }
-            
+
             DateTime firstDay = graphData.First().Timestamp;
             var q = from d in graphData
                     let groupNumber = DbFunctions.DiffDays(d.Timestamp, firstDay).Value / interval
@@ -68,9 +69,33 @@ namespace Nickel.Models
         public IEnumerable<GraphData> Data { get; set; }
     }
 
+    [JsonConverter(typeof(GraphDataJsonConverter))]
     public class GraphData
     {
         public DateTime Timestamp { get; set; }
         public float Value { get; set; }
+    }
+
+    public class GraphDataJsonConverter : JsonConverter
+    {
+        public override bool CanConvert(Type objectType)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        {
+            GraphData data = value as GraphData;
+
+            writer.WriteStartArray();
+            writer.WriteValue(data.Timestamp);
+            writer.WriteValue(data.Value);
+            writer.WriteEndArray();
+        }
     }
 }

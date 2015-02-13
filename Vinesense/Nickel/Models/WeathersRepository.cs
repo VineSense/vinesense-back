@@ -39,27 +39,5 @@ namespace Nickel.Models
                        WindSpeed = w.WindSpeed
                    };
         }
-
-        public IQueryable<WeatherValue> GetRangeDaily(DateTime begin, DateTime end)
-        {
-            return from w in DbSet
-                   where begin <= w.Timestamp && w.Timestamp < end
-                   let date = DbFunctions.TruncateTime(w.Timestamp)
-                   group w by date into g
-                   orderby g.Key.Value ascending
-                   select new WeatherValue
-                   {
-                       LeafWetnessCounts = g.Average((w) => w.LeafWetnessCounts),
-                       LeafWetnessMinutes = g.Average((w) => w.LeafWetnessMinutes),
-                       Precipitation = g.Average((w) => w.Precipitation),
-                       RelativeHumidity = g.Average((w) => w.RelativeHumidity),
-                       WindDirection = (int)g.Average((w) => w.WindDirection),
-                       SolarRadiation = g.Average((w) => w.SolarRadiation),
-                       WindGust = g.Average((w) => w.WindGust),
-                       WindSpeed = g.Average((w) => w.WindSpeed),
-                       Temperature = g.Average((w) => w.Temperature),
-                       Timestamp = g.Key.Value
-                   };
-        }
     }
 }
