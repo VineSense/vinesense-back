@@ -16,6 +16,7 @@ namespace Nickel
         public static void Register(HttpConfiguration config)
         {
             // Web API 구성 및 서비스
+            config.EnableCors();
 
             var formatters = GlobalConfiguration.Configuration.Formatters;
             var jsonFormatter = formatters.JsonFormatter;

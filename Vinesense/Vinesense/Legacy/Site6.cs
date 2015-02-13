@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Vinesense.Legacy
 {
-    [Table("viticulture.site_6")]
+    [Table("viticulture.Site_6")]
     public class Site6 : ISiteRecord
     {
         [DatabaseGenerated(DatabaseGeneratedOption.None)]

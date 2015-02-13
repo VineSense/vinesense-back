@@ -9,11 +9,13 @@ using System.Linq.Expressions;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using System.Xml.Serialization;
 using Vinesense.Model;
 
 namespace Nickel.Controllers
 {
+    [EnableCors("*", "*", "*")]
     public class LogsController : ApiController
     {
         IGraphDataService GraphDataService { get; set; }

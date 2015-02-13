@@ -76,6 +76,7 @@ namespace Vinesense.Batch.Services
         void MigrateSite<T>(Func<DateTime, IEnumerable<T>> query)
             where T : ISiteRecord
         {
+            Console.WriteLine(typeof(T).ToString());
             SiteMigrator<T> migrator = Container.Resolve<SiteMigrator<T>>();
             migrator.MigrateSite();
 

@@ -7,10 +7,12 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using Vinesense.Model;
 
 namespace Nickel.Controllers
 {
+    [EnableCors("*", "*", "*")]
     public class WeathersController : ApiController
     {
         IWeathersRepository WeathersRepository { get; set; }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Vinesense.Legacy
 {
-    [Table("viticulture.weather_station")]
+    [Table("viticulture.Weather_Station")]
     public class WeatherStation : IRecord
     {
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
