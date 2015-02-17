@@ -17,6 +17,7 @@ namespace Nickel.Models
     {
         public DateTime Timestamp { get; set; }
         public float Temperature { get; set; }
+        public float Precipitation { get; set; }
     }
 
     public class WeatherResultJsonConverter : JsonConverter
@@ -38,6 +39,7 @@ namespace Nickel.Models
             writer.WriteStartArray();
             writer.WriteValue(weatherResult.Timestamp);
             writer.WriteValue(weatherResult.Temperature);
+            writer.WriteValue(weatherResult.Precipitation);
             writer.WriteEndArray();
         }
 

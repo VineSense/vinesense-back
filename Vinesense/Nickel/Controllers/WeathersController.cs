@@ -44,7 +44,8 @@ namespace Nickel.Controllers
                        select new WeatherResult
                        {
                            Timestamp = w.Timestamp,
-                           Temperature = w.Temperature
+                           Temperature = w.Temperature,
+                           Precipitation = w.Precipitation
                        };
 
             return new WeathersControllerSingleResult
@@ -103,14 +104,16 @@ namespace Nickel.Controllers
                     select new
                     {
                         GroupNumber = g.Key,
-                        Temperature = g.Average((d) => d.Temperature)
+                        Temperature = g.Average((d) => d.Temperature),
+                        Precipitation = g.Average((d) => d.Precipitation)
                     };
 
             return from v in q.AsEnumerable()
                    select new WeatherResult
                    {
                        Timestamp = firstDay + TimeSpan.FromDays(interval * v.GroupNumber),
-                       Temperature = v.Temperature
+                       Temperature = v.Temperature,
+                       Precipitation = v.Precipitation
                    };
         }
     }
