@@ -32,6 +32,7 @@ namespace Nickel.Controllers
             public DateTime? Begin { get; set; }
             public DateTime? End { get; set; }
             public int? Interval { get; set; }
+            public string Column { get; set; }
         }
 
         private WeathersControllerSingleResult GetSingleResult(WeatherControllerRequestRange range)
@@ -41,17 +42,12 @@ namespace Nickel.Controllers
 
             var data = from w in WeathersRepository.GetRange(begin, end)
                        orderby w.Timestamp ascending
-                       select new WeatherResult
-                       {
-                           Timestamp = w.Timestamp,
-                           Temperature = w.Temperature,
-                           Precipitation = w.Precipitation
-                       };
+                       select w;
 
             return new WeathersControllerSingleResult
             {
                 Tag = range.Tag,
-                Data = data.GroupBy(range.Interval ?? 0).ToList()
+                Data = WeathersRepository.FilterColumn(data.GroupBy(range.Interval ?? 0).ToList(), range.Column)
             };
         }
 
@@ -89,7 +85,7 @@ namespace Nickel.Controllers
 
     public static class WeatherResultHelper
     {
-        public static IEnumerable<WeatherResult> GroupBy(this IQueryable<WeatherResult> data, int interval = 0)
+        public static IEnumerable<WeatherValue> GroupBy(this IQueryable<WeatherValue> data, int interval = 0)
         {
             if (interval <= 0)
             {
@@ -105,15 +101,29 @@ namespace Nickel.Controllers
                     {
                         GroupNumber = g.Key,
                         Temperature = g.Average((d) => d.Temperature),
-                        Precipitation = g.Average((d) => d.Precipitation)
+                        Precipitation = g.Average((d) => d.Precipitation),
+                        LeafWetnessCounts = g.Average((d) => d.LeafWetnessCounts),
+                        LeafWetnessMinutes = g.Average((d) => d.LeafWetnessMinutes),
+                        RelativeHumidity = g.Average((d) => d.RelativeHumidity),
+                        SolarRadiation = g.Average((d) => d.SolarRadiation),
+                        WindDirection = g.Average((d) => d.WindDirection),
+                        WindGust = g.Average((d) => d.WindGust),
+                        WindSpeed = g.Average((d) => d.WindSpeed)
                     };
 
             return from v in q.AsEnumerable()
-                   select new WeatherResult
+                   select new WeatherValue
                    {
                        Timestamp = firstDay + TimeSpan.FromDays(interval * v.GroupNumber),
                        Temperature = v.Temperature,
-                       Precipitation = v.Precipitation
+                       Precipitation = v.Precipitation,
+                       LeafWetnessCounts = v.LeafWetnessCounts,
+                       LeafWetnessMinutes = v.LeafWetnessMinutes,
+                       RelativeHumidity = v.RelativeHumidity,
+                       SolarRadiation = v.SolarRadiation,
+                       WindDirection = (int)v.WindDirection,
+                       WindGust = v.WindGust,
+                       WindSpeed = v.WindSpeed
                    };
         }
     }

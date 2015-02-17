@@ -10,14 +10,14 @@ namespace Nickel.Models
     public interface IWeathersRepository : IGenericRepository<Weather>
     {
         IQueryable<WeatherValue> GetRange(DateTime begin, DateTime end);
+        IEnumerable<WeatherResult> FilterColumn(IEnumerable<WeatherValue> weatherValues, string column);
     }
 
     [JsonConverter(typeof(WeatherResultJsonConverter))]
     public class WeatherResult
     {
         public DateTime Timestamp { get; set; }
-        public float Temperature { get; set; }
-        public float Precipitation { get; set; }
+        public float Value { get; set; }
     }
 
     public class WeatherResultJsonConverter : JsonConverter
@@ -38,8 +38,7 @@ namespace Nickel.Models
 
             writer.WriteStartArray();
             writer.WriteValue(weatherResult.Timestamp);
-            writer.WriteValue(weatherResult.Temperature);
-            writer.WriteValue(weatherResult.Precipitation);
+            writer.WriteValue(weatherResult.Value);
             writer.WriteEndArray();
         }
 
