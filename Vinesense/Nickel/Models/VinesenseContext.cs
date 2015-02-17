@@ -9,7 +9,6 @@ namespace Nickel.Models
     using System.Data.Entity.Infrastructure.Annotations;
     using MySql.Data.Entity;
     using System.Data.Entity.Infrastructure;
-    using System.Data.Entity.Core.Objects;
     using CodeFirstStoreFunctions;
 
     [DbConfigurationType(typeof(MySqlEFConfiguration))]
