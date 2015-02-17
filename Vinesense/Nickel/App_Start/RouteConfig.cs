@@ -16,7 +16,7 @@ namespace Nickel
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+                defaults: new { controller = "Vinesense", action = "Index", id = UrlParameter.Optional }
             );
         }
     }
