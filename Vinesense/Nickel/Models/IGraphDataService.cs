@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Objects;
+using System.Data.Objects.DataClasses;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -42,7 +44,7 @@ namespace Nickel.Models
 
             DateTime realFirstDay = firstDay ?? graphData.First().Timestamp;
             var q = from d in graphData
-                    let groupNumber = DbFunctions.DiffDays(d.Timestamp, firstDay).Value / interval
+                    let groupNumber = VinesenseContext.DateDiff(d.Timestamp, firstDay).Value / interval
                     let groupNumberInteger = DbFunctions.Truncate((double)groupNumber, 0)
                     group d by (int)groupNumberInteger.Value into g
                     select new

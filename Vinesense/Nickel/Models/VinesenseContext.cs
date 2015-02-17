@@ -9,6 +9,8 @@ namespace Nickel.Models
     using System.Data.Entity.Infrastructure.Annotations;
     using MySql.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using CodeFirstStoreFunctions;
 
     [DbConfigurationType(typeof(MySqlEFConfiguration))]
     public class VinesenseContext : DbContext
@@ -23,8 +25,16 @@ namespace Nickel.Models
         public virtual DbSet<Site> Sites { get; set; }
         public virtual DbSet<Weather> Weathers { get; set; }
 
+        [DbFunction("CodeFirstDatabaseSchema", "DateDiff")]
+        public static int? DateDiff(DateTime? a, DateTime? b)
+        {
+            throw new NotSupportedException();
+        }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            modelBuilder.Conventions.Add(new FunctionsConvention<VinesenseContext>(""));
+
             modelBuilder.Entity<Log>()
                 .Property(l => l.Timestamp)
                 .HasColumnAnnotation

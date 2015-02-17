@@ -58,7 +58,7 @@ namespace Nickel.Controllers
                 throw new HttpResponseException(HttpStatusCode.BadRequest);
             }
 
-            var result = GraphDataService.GetRangeBySiteId(begin, end, interval, sensorType, siteId);
+            var result = GraphDataService.GetRangeBySiteId(begin, end, interval, sensorType, siteId).ToList();
             foreach (var graph in result)
             {
                 graph.Data = graph.Data.ToList();
