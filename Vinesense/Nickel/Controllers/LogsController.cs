@@ -18,12 +18,14 @@ namespace Nickel.Controllers
     [EnableCors("*", "*", "*")]
     public class LogsController : ApiController
     {
+        IWeathersRepository WeathersRepository { get; set; }
         IGraphDataService GraphDataService { get; set; }
         ISitesRepository SitesRepository { get; set; }
-        public LogsController(IGraphDataService graphDataService, ISitesRepository sitesRepository)
+        public LogsController(IGraphDataService graphDataService, ISitesRepository sitesRepository, IWeathersRepository weathersRepository)
         {
             GraphDataService = graphDataService;
             SitesRepository = sitesRepository;
+            WeathersRepository = weathersRepository;
         }
 
         public class GetRangeBySiteIdRequest
@@ -56,6 +58,30 @@ namespace Nickel.Controllers
                 throw new HttpResponseException(HttpStatusCode.BadRequest);
             }
 
+            var result = GraphDataService.GetRangeBySiteId(begin, end, interval, sensorType, siteId);
+            foreach (var graph in result)
+            {
+                graph.Data = graph.Data.ToList();
+            }
+
+            var dateTimes = from graph in result
+                            from data in graph.Data
+                            select data.Timestamp;
+
+            IEnumerable<WeatherResult> weatherResult = null;
+
+            if (dateTimes.Count() != 0)
+            {
+                DateTime weatherBegin = dateTimes.Min();
+                DateTime weatherEnd = dateTimes.Max();
+
+                var data = from w in WeathersRepository.GetRange(weatherBegin, weatherEnd)
+                           orderby w.Timestamp ascending
+                           select w;
+
+                weatherResult = WeathersRepository.FilterColumn(data.GroupBy(interval).ToList(), "Precipitation");
+            }
+
             return new GetBySiteResponse
             {
                 Site = new SiteValue
@@ -66,7 +92,8 @@ namespace Nickel.Controllers
                     Name = site.Name,
                     Number = site.Number
                 },
-                Result = GraphDataService.GetRangeBySiteId(begin, end, interval, sensorType, siteId)
+                Result = result,
+                Weather = weatherResult
             };
         }
 
@@ -94,10 +121,35 @@ namespace Nickel.Controllers
             string sensorType = request.SensorType;
             int interval = request.Interval ?? 0;
 
+            var result = GraphDataService.GetRangeByDepth(begin, end, interval, sensorType, depth).ToList();
+            foreach(var graph in result)
+            {
+                graph.Data = graph.Data.ToList();
+            }
+            
+            var dateTimes = from graph in result
+                            from data in graph.Data
+                            select data.Timestamp;
+
+            IEnumerable<WeatherResult> weatherResult = null;
+
+            if (dateTimes.Count() != 0)
+            {
+                DateTime weatherBegin = dateTimes.Min();
+                DateTime weatherEnd = dateTimes.Max();
+
+                var data = from w in WeathersRepository.GetRange(weatherBegin, weatherEnd)
+                           orderby w.Timestamp ascending
+                           select w;
+
+                weatherResult = WeathersRepository.FilterColumn(data.GroupBy(interval).ToList(), "Precipitation");
+            }
+
             return new GetByDepthResponse
             {
                 Depth = depth,
-                Result = GraphDataService.GetRangeByDepth(begin, end, interval, sensorType, depth)
+                Result = result,
+                Weather = weatherResult
             };
         }
 
@@ -105,12 +157,14 @@ namespace Nickel.Controllers
         {
             public SiteValue Site { get; set; }
             public IEnumerable<Graph> Result { get; set; }
+            public IEnumerable<WeatherResult> Weather { get; set; }
         }
 
         public class GetByDepthResponse
         {
             public float Depth { get; set; }
             public IEnumerable<Graph> Result { get; set; }
+            public IEnumerable<WeatherResult> Weather { get; set; }
         }
     }
 }
