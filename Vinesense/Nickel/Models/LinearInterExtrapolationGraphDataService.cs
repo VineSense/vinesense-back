@@ -81,6 +81,8 @@ namespace Nickel.Models
 
         private IQueryable<GraphData> GetInterExtrapolated(int siteId, float depth, float depthA, float depthB, int sensorIdA, int sensorIdB)
         {
+            float factor = (depth - depthA) / (depthB - depthA);
+
             var q = from log0 in Logs
                     where log0.SensorId == sensorIdA
                     from log1 in Logs
@@ -89,7 +91,7 @@ namespace Nickel.Models
                     select new GraphData
                     {
                         Timestamp = log0.Timestamp,
-                        Value = log0.Value + (log1.Value - log0.Value) * (depth - depthA) / (depthB - depthA)
+                        Value = log0.Value + (log1.Value - log0.Value) * factor
                     };
 
             return q;
