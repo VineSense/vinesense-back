@@ -53,24 +53,34 @@
         </nav>
         <div id="page-wrapper">
             <div class="row">
-                <div class="col-lg-8" id="chart-1-panel">
+                <div class="col-lg-8" id="top-chart-panel">
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <i class="fa fa-clock-o fa-fw"></i> Underground
-                            <button class="btn btn-default btn-sm panel-item-toggle-btn pull-right" data-event-change-panel="chart-1">
-                                <span class="glyphicon glyphicon-resize-full pull-right" id="chart-1-span" aria-hidden="true"></span>
+                            <button class="btn btn-default btn-sm panel-item-toggle-btn pull-right" data-event-change-panel="top-chart">
+                                <span class="glyphicon glyphicon-resize-full pull-right" id="top-chart-span" aria-hidden="true"></span>
                             </button>
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
-                            <div id="chart-1"></div>
+                            <div class="side-menu-bottom-item-datepicker">
+                                <div class="btn-group" data-toggle="buttons">
+                                    <label class="btn btn-default active">
+                                        <input type="radio" data-event-on-off-precipitation name="data-event-on-off-precipitation" value="on" checked>On
+                                    </label>
+                                    <label class="btn btn-default">
+                                        <input type="radio" data-event-on-off-precipitation name="data-event-on-off-precipitation" value="off">Off
+                                    </label>
+                                </div>
+                            </div>
+                            <div id="top-chart"></div>
                         </div>
                         <!-- /.panel-body -->
                     </div>
                     <!-- /.panel -->
                 </div>
                 <!-- /.col-lg-8 -->
-                <div class="col-lg-4" id="chart-1-side-panel">
+                <div class="col-lg-4" id="top-chart-side-panel">
                     <div class="panel panel-default side-penel">
                         <div class="panel-heading">
                             <i class="fa fa-bell fa-fw"></i> Side Menu
@@ -211,7 +221,7 @@
                         <!-- /.panel-heading -->
                         <div class="panel-body">
                             <div id="map" class="map"></div>
-                            <script src="./Resources/javascript/openlayers.js"></script>
+                            <script src="./Resources/javascript/openlayer/openlayer.js"></script>
                         </div>
                         <!-- /.panel-body -->
                     </div>
@@ -219,12 +229,12 @@
             </div>
             <!-- /.row -->
             <div class="row">
-                <div class="col-lg-8" id="chart-2-panel">
+                <div class="col-lg-8" id="bottom-chart-panel">
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <i class="fa fa-clock-o fa-fw"></i> Outside
-                            <button class="btn btn-default btn-sm panel-item-toggle-btn pull-right" data-event-change-panel="chart-2">
-                                <span class="glyphicon glyphicon-resize-full pull-right" id="chart-2-span" aria-hidden="true"></span>
+                            <button class="btn btn-default btn-sm panel-item-toggle-btn pull-right" data-event-change-panel="bottom-chart">
+                                <span class="glyphicon glyphicon-resize-full pull-right" id="bottom-chart-span" aria-hidden="true"></span>
                             </button>
                         </div>
                         <!-- /.panel-heading -->
@@ -232,43 +242,44 @@
                             <div class="side-menu-bottom-item-datepicker">
                                 <div class="btn-group" data-toggle="buttons">
                                     <label class="btn btn-default active">
-                                        <input type="radio" data-event-change-compare-temperature name="data-event-change-compare-temperature" value="high" checked>High
+                                        <input type="radio" data-event-change-compare-type name="data-event-change-compare-type" value="high" checked>High
                                     </label>
                                     <label class="btn btn-default">
-                                        <input type="radio" data-event-change-compare-temperature name="data-event-change-compare-temperature" value="low">Low
+                                        <input type="radio" data-event-change-compare-type name="data-event-change-compare-type" value="low">Low
                                     </label>
                                 </div>
-                                <select>
-                                    <option>2010</option>
-                                    <option>2011</option>
-                                    <option>2012</option>
-                                    <option>2013</option>
-                                    <option selected>2014</option>
-                                    <option>2015</option>
-                                </select>
+                                <select select-compare-year="compare"></select>
                                 /
-                                <select>
-                                    <option>2010</option>
-                                    <option>2011</option>
-                                    <option>2012</option>
-                                    <option>2013</option>
-                                    <option>2014</option>
-                                    <option selected>2015</option>
-                                </select>
+                                <select select-compare-year="standard"></select>
                             </div>
-                            <div id="chart-2"></div>
+                            <div id="bottom-chart"></div>
                         </div>
                         <!-- /.panel-body -->
                     </div>
                 </div>
                 <!-- /.col-lg-8 -->
-                <div class="col-lg-4" id="chart-2-side-panel">
+                <div class="col-lg-4" id="bottom-chart-side-panel">
                     <div class="panel panel-default side-penel">
                         <div class="panel-heading">
                             <i class="fa fa-bell fa-fw"></i> Side Menu
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body side-menu-bottom-items">
+                            <div>
+                                <label>
+                                    <select id="view-feature-select">
+                                        <option value="Temperature">Temperature</option>
+                                        <option value="LeafWetnessCounts">LeafWetnessCounts</option>
+                                        <option value="LeafWetnessMinutes">LeafWetnessMinutes</option>
+                                        <option value="Precipitation">Precipitation</option>
+                                        <option value="RelativeHumidity">RelativeHumidity</option>
+                                        <option value="SolarRadiation">SolarRadiation</option>
+                                        <option value="WindDirection">WindDirection</option>
+                                        <option value="WindGust">WindGust</option>
+                                        <option value="WindSpeed">WindSpeed</option>
+                                    </select>
+                                </label>
+                            </div>
                             <div class="side-menu-bottom-item">
                                 <div class="btn-group" data-toggle="buttons">
                                     <label class="btn btn-default btn-sm active" data-event-change-chart-section="all">
@@ -289,19 +300,8 @@
                                 </div>
                             </div>
                             <div class="side-menu-bottom-item-info">
-                                <ul class="list-unstyled" data-bottom-side-menu-list>
+                                <ul data-weather-compare-infomation class="list-unstyled">
                                     <li>높은온도 : 100일</li>
-                                    <li>2015.01.02 ~ 2015.02.02 : +4°C (평균온도 : 10°C)</li>
-                                    <li>2015.01.02 ~ 2015.02.02 : +4°C (평균온도 : 10°C)</li>
-                                    <li>2015.01.02 ~ 2015.02.02 : +4°C (평균온도 : 10°C)</li>
-                                    <li>2015.01.02 ~ 2015.02.02 : +4°C (평균온도 : 10°C)</li>
-                                    <li>2015.01.02 ~ 2015.02.02 : +4°C (평균온도 : 10°C)</li>
-                                    <li>2015.01.02 ~ 2015.02.02 : +4°C (평균온도 : 10°C)</li>
-                                    <li>2015.01.02 ~ 2015.02.02 : +4°C (평균온도 : 10°C)</li>
-                                    <li>2015.01.02 ~ 2015.02.02 : +4°C (평균온도 : 10°C)</li>
-                                    <li>2015.01.02 ~ 2015.02.02 : +4°C (평균온도 : 10°C)</li>
-                                    <li>2015.01.02 ~ 2015.02.02 : +4°C (평균온도 : 10°C)</li>
-                                    <li>2015.01.02 ~ 2015.02.02 : +4°C (평균온도 : 10°C)</li>
                                     <li>2015.01.02 ~ 2015.02.02 : +4°C (평균온도 : 10°C)</li>
                                     <li>구간별 평균온도 차이 : 40일</li>
                                 </ul>
@@ -330,16 +330,14 @@
     <script type="text/javascript" src="./Resources/lib/bootstrap3_datepicker/js/bootstrap-datetimepicker.js"></script>
 
     <script src="./Resources/lib/blockui/js/jquery.blockUI.js"></script>
-    <script src="./Resources/javascript/blockUI.js"></script>
-    <script src="./Resources/javascript/dom_event_handler.js"></script>
-    <script src="./Resources/javascript/chart/chart_option.js"></script>
-    <script src="./Resources/javascript/chart/chart_1.js"></script>
-    <script src="./Resources/javascript/chart/chart_2.js"></script>
-    <script src="./Resources/javascript/chart/calculateTemperature.js"></script>
+    <script src="./Resources/javascript/main.js"></script>
+    <script src="./Resources/javascript/chart/chart_generator.js"></script>
+    <script src="./Resources/javascript/chart/topChart/chart.js"></script>
+    <script src="./Resources/javascript/chart/bottomChart/chart.js"></script>
+    <script src="./Resources/javascript/chart/dataDifferenceInfomation.js"></script>
 
-    <script src="./Resources/javascript/common.js"></script>
-    <script src="./Resources/javascript/datepicker.js"></script>
-    <script src="./Resources/javascript/network.js"></script>
+    <script src="./Resources/javascript/common/common.js"></script>
+    <script src="./Resources/javascript/network/network.js"></script>
     <!-- Custom Theme JavaScript -->
     <script src="./Resources/lib/dist/js/sb-admin-2.js"></script>
 </body>
