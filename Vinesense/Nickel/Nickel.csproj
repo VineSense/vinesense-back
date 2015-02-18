@@ -216,25 +216,25 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\GenericRepository.cs" />
-    <Compile Include="Models\IDbContextFactory.cs" />
-    <Compile Include="Models\IDepthOfInterestProvider.cs" />
-    <Compile Include="Models\IGenericRepository.cs" />
-    <Compile Include="Models\ILogsRepository.cs" />
-    <Compile Include="Models\IGraphDataService.cs" />
-    <Compile Include="Models\ISensorsRepository.cs" />
-    <Compile Include="Models\ISitesRepository.cs" />
-    <Compile Include="Models\IUnitOfWork.cs" />
-    <Compile Include="Models\IWeathersRepository.cs" />
-    <Compile Include="Models\LogsRepositoy.cs" />
-    <Compile Include="Models\LinearInterExtrapolationGraphDataService.cs" />
-    <Compile Include="Models\OneTwoThreeFourAndFiveDepthOfInterestProvider.cs" />
-    <Compile Include="Models\SensorsRepository.cs" />
-    <Compile Include="Models\SitesRepository.cs" />
-    <Compile Include="Models\UnitOfWork.cs" />
-    <Compile Include="Models\VinesenseContext.cs" />
-    <Compile Include="Models\VinesenseDbContextFactory.cs" />
-    <Compile Include="Models\WeathersRepository.cs" />
+    <Compile Include="Models\Repositories\GenericRepository.cs" />
+    <Compile Include="Models\DataSources\IDbContextFactory.cs" />
+    <Compile Include="Models\Providers\IDepthOfInterestProvider.cs" />
+    <Compile Include="Models\Repositories\IGenericRepository.cs" />
+    <Compile Include="Models\Repositories\ILogsRepository.cs" />
+    <Compile Include="Models\Services\IGraphDataService.cs" />
+    <Compile Include="Models\Repositories\ISensorsRepository.cs" />
+    <Compile Include="Models\Repositories\ISitesRepository.cs" />
+    <Compile Include="Models\DataSources\IUnitOfWork.cs" />
+    <Compile Include="Models\Repositories\IWeathersRepository.cs" />
+    <Compile Include="Models\Repositories\LogsRepositoy.cs" />
+    <Compile Include="Models\Services\LinearInterExtrapolationGraphDataService.cs" />
+    <Compile Include="Models\Providers\OneTwoThreeFourAndFiveDepthOfInterestProvider.cs" />
+    <Compile Include="Models\Repositories\SensorsRepository.cs" />
+    <Compile Include="Models\Repositories\SitesRepository.cs" />
+    <Compile Include="Models\DataSources\UnitOfWork.cs" />
+    <Compile Include="Models\DataSources\VinesenseContext.cs" />
+    <Compile Include="Models\DataSources\VinesenseDbContextFactory.cs" />
+    <Compile Include="Models\Repositories\WeathersRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

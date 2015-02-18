@@ -41,7 +41,6 @@ namespace Nickel.Models
             writer.WriteValue(weatherResult.Value);
             writer.WriteEndArray();
         }
-
     }
 
     public class WeatherValue : Weather
