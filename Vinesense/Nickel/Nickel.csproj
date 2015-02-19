@@ -227,6 +227,7 @@
     <Compile Include="Models\DataSources\IUnitOfWork.cs" />
     <Compile Include="Models\Repositories\IWeathersRepository.cs" />
     <Compile Include="Models\Repositories\LogsRepositoy.cs" />
+    <Compile Include="Models\Services\IServerInformationService.cs" />
     <Compile Include="Models\Services\LinearInterExtrapolationGraphDataService.cs" />
     <Compile Include="Models\Providers\OneTwoThreeFourAndFiveDepthOfInterestProvider.cs" />
     <Compile Include="Models\Repositories\SensorsRepository.cs" />
@@ -235,6 +236,7 @@
     <Compile Include="Models\DataSources\VinesenseContext.cs" />
     <Compile Include="Models\DataSources\VinesenseDbContextFactory.cs" />
     <Compile Include="Models\Repositories\WeathersRepository.cs" />
+    <Compile Include="Models\Services\ServerInformationService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

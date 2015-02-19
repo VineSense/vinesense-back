@@ -45,6 +45,7 @@ namespace Nickel.App_Start
             container.RegisterType<IGraphDataService, LinearInterExtrapolationGraphDataService>();
             container.RegisterType<IDepthOfInterestProvider, OneTwoThreeFourAndFiveDepthOfInterestProvider>();
             container.RegisterType<ISensorsRepository, SensorsRepository>();
+            container.RegisterType<IServerInformationService, ServerInformationService>();
         }
     }
 }
