@@ -1,6 +1,7 @@
 ﻿@{
     Layout = null;
 }
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,8 +12,8 @@
     <meta name="author" content="">
     <title>VineSense</title>
     <!-- Bootstrap Core CSS -->
-    <link href="./Resources/lib/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!--<link href="./Resources/lib/bower_components/bootstrap/dist/css/bootstrap-bootswatch.css" rel="stylesheet">-->
+    <!-- <link href="./Resources/lib/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"> -->
+    <link href="./Resources/lib/bower_components/bootstrap/dist/css/bootstrap-bootswatch.css" rel="stylesheet">
     <!-- MetisMenu CSS -->
     <link href="./Resources/lib/bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
     <!-- Timeline CSS -->
@@ -105,7 +106,8 @@
                                             <input type="radio" data-event-change-type name="data-event-change-type" value="moisture">Moisture
                                         </label>
                                     </div>
-
+                                </div>
+                                <div class="side-menu-top-item">
                                     <div class="btn-group" data-toggle="buttons">
                                         <label class="btn btn-default active">
                                             <input type="radio" data-event-change-view-option name="data-event-change-view" value="depth" checked>Depth
@@ -318,6 +320,7 @@
     </div>
     <!-- /#wrapper -->
 
+
     <script type="text/javascript">
         var serverInformation = {
             host: '@ViewBag.Host',
@@ -327,6 +330,7 @@
             depthNumber: @ViewBag.DepthNumber
             };
     </script>
+
 
     <!-- jQuery -->
     <script src="./Resources/lib/bower_components/jquery/dist/jquery.min.js"></script>
