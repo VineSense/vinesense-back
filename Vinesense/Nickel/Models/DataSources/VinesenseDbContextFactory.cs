@@ -12,7 +12,7 @@ namespace Nickel.Models
         public DbContext CreateContext()
         {
             var context = new VinesenseContext();
-            context.Database.Log = (log) => Debug.WriteLine(log);
+            // context.Database.Log = (log) => Debug.WriteLine(log);
             return context;
         }
     }

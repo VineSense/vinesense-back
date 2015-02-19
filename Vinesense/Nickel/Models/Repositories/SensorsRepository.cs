@@ -29,7 +29,7 @@ namespace Nickel.Models
             if (sensorType == "moisture")
             {
                 return from s in dbSet
-                       where s.SensorType == SensorType.Moisture
+                       where s.SensorType == SensorType.Moisture || s.SensorType == SensorType.Humidity
                        select s;
             }
 

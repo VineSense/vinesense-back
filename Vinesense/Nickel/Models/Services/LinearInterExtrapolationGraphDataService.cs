@@ -113,8 +113,8 @@ namespace Nickel.Models
         private Tuple<bool, IQueryable<GraphData>> Get(int siteId, float depth, string sensorType)
         {
             var sensors = from s in SensorsRepository.GetType(sensorType)
-                                     where s.SiteId == siteId
-                                     select s;
+                          where s.SiteId == siteId
+                          select s;
 
             var availableDepths = from s in sensors
                                   select s.Depth;
