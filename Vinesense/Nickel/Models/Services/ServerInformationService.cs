@@ -9,7 +9,7 @@ namespace Nickel.Models
     {
         public string GetHost()
         {
-            return "http://vines.cloudapp.net/Nickel";
+            return "";
         }
 
         public string GetMinDate()
